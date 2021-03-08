@@ -40,12 +40,12 @@ package leetcode.editor.cn;
 // 题目数据保证列表表示的数字不含前导零 
 // 
 // Related Topics 递归 链表 数学 
-// 👍 5587 👎 0
+// 👍 5763 👎 0
 
 public class AddTwoNumbers{
     public static void main(String[] args) {
         Solution solution = new AddTwoNumbers().new Solution();
-
+        
     }
 
 //leetcode submit region begin(Prohibit modification and deletion)
@@ -61,35 +61,24 @@ public class AddTwoNumbers{
  */
 class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode head =null,tail=null;//这里是创建了一个用于存放结果的新链表，初始化为空链表。
-        int carray=0;//初始化进位为0
-        while(l1!=null || l2!=null){
-
-            int n1 = l1 != null ? l1.val : 0;
-            //如果链表节点不为null，则将其值赋值给n，否则用0补位
-            int n2 = l2 != null ? l2.val : 0;
-
-            int sum = n1+n2+carray;//计算对应节点的和
-            carray = sum/10;//取进位数
-
-            if (head == null) {
-                head = tail = new ListNode(sum % 10);
-            } else {
-                tail.next = new ListNode(sum % 10);
-                tail = tail.next;
+        ListNode dummy=new ListNode(0);
+        ListNode cur = dummy;
+        int carry=0;
+        while(l1 != null || l2 != null || carry>0){
+            int x = l1==null ? 0 : l1.val;
+            int y = l2==null ? 0 : l2.val;
+            int sum = x + y + carry;
+            carry = sum / 10;
+            cur.next = new ListNode(sum%10);
+            cur=cur.next;
+            if (l1!=null){
+                l1=l1.next;
             }
-            //先是创建了一个新的节点存放sum%10（这个数就是我们要存进新链表的元素）
-            // 然后将tail.next的引用指向该元素，相当于一个链表尾插操作
-            //最后再将tail的引用往后移一位
-
-            if (l1!=null) l1=l1.next;
-            if (l2!=null) l2=l2.next;
-            //这里是判断L1和L2这两条链表是否已经到尾了，如果是则跳出，不食则继续下一个节点
+            if (l2!=null){
+                l2=l2.next;
+            }
         }
-        if (carray>0){
-            tail.next = new ListNode(carray);
-        }
-        return head;
+        return dummy.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
